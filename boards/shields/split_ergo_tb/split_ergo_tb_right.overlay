@@ -98,5 +98,6 @@
         reg = <0>;
         spi-max-frequency = <2000000>;         // SPI通信の最大周波数（2MHz）
         irq-gpios = <&gpio0 15 GPIO_ACTIVE_LOW>; // 割り込み（モーション検知）ピン
+        automouse-layer = <2>;                 // このレイヤをオートマウスレイヤにする
     };
 };
