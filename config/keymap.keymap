@@ -44,7 +44,7 @@
                 &trans       &trans       &trans       &trans        &trans                                   &trans       &trans        &trans       &trans        &trans
                 &trans       &trans       &trans       &trans        &trans       &trans       &trans         &mkp MB5     &mkp LCLK     &mkp MCLK    &mkp RCLK     &trans
                 &trans       &trans       &trans       &trans        &trans       &trans       &trans         &mkp MB4     &trans        &trans       &trans        &trans
-                                                       &trans        &trans       &trans       &trans         &transz
+                                                       &trans        &trans       &trans       &trans         &trans
                        >;
                 };
 
