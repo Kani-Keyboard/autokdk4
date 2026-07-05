@@ -45,12 +45,20 @@
     trackball_listener: trackball_listener {    // トラックボールの入力を監視・加工するリスナー設定
         compatible = "zmk,input-listener";
         device = <&trackball>;
-        layers = <0 2 3 4 5 6>;                   // レイヤー1（スクロール）を除外した全レイヤーを指定
+        layers = <0 2 3 4 5 6 7 8 9>;                   // レイヤー1（スクロール）を除外した全レイヤーを指定
         input-processors = <&zip_xy_transform (INPUT_TRANSFORM_X_INVERT | INPUT_TRANSFORM_Y_INVERT)>, // 軸の反転設定
         <&zip_x_scaler 3 5>,                    // X軸スケーラー（速度調整）
         <&zip_y_scaler 3 5>;                    // Y軸スケーラー（速度調整）
     };
+    
+    trackball_scroll_listener: trackball_scroll_listener { // スクロール専用のリスナー設定
+        compatible = "zmk,input-listener";
+        device = <&trackball>;
+        layers = <1>;                           // Dキー長押し（レイヤー1）のときに適用
+        input-processors = <&zip_xy_to_scroll_processor>; // スクロール処理へ変換
+    };
 };
+
 
 &physical_layout0 {                             // キースキャン設定と配列マップを物理レイアウトに適用
     kscan = <&kscan0>;
