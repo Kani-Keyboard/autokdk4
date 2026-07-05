@@ -47,7 +47,8 @@
         device = <&trackball>;
         input-processors = <&zip_xy_transform (INPUT_TRANSFORM_X_INVERT | INPUT_TRANSFORM_Y_INVERT)>, // 軸の反転設定
         <&zip_x_scaler 3 5>,                    // X軸スケーラー（速度調整）
-        <&zip_y_scaler 3 5>;                    // Y軸スケーラー（速度調整）
+        <&zip_y_scaler 3 5>,                    // Y軸スケーラー（速度調整）
+        <&zip_temp_layer 2 600>;                // オートマウスレイヤー2へ！600ミリ秒で元に戻る
         
         scroller {                              // スクロール設定
         layers = <1>;                       // Dキー長押し（レイヤー1）のときにスクロール追加
@@ -98,6 +99,5 @@
         reg = <0>;
         spi-max-frequency = <2000000>;         // SPI通信の最大周波数（2MHz）
         irq-gpios = <&gpio0 15 GPIO_ACTIVE_LOW>; // 割り込み（モーション検知）ピン
-        automouse-layer = <2>;                 // このレイヤをオートマウスレイヤにする
     };
 };
