@@ -15,12 +15,6 @@
     quick-tap-ms = <200>; // 2連打ホールドでキーを連打リピート
 };
 
-//* ==================== スクロールモード追加 ==================== */
-&trackball_listener {
-    layers = <5>; // Dキー長押しで切り替わる「layer_5」の時にスクロールする設定だお！
-    input-processors = <&zip_xy_to_scroll_processor>;
-};
-
 / {
     keymap {
         compatible = "zmk,keymap";
