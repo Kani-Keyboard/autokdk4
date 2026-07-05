@@ -1,105 +1,90 @@
-#include <dt-bindings/zmk/matrix_transform.h>   // 外部定義ファイルのインクルード
-#include <input/processors.dtsi>                // インプットプロセッサのインクルード
-#include <dt-bindings/zmk/input_transform.h>    // マトリクス変換のインクルード
-#include "layouts.dtsi"                         // レイアウトファイルのインクルード
+#include <behaviors.dtsi>
+#include <dt-bindings/zmk/keys.h>
+#include <dt-bindings/zmk/bt.h>
+#include <dt-bindings/zmk/mouse.h> // マウス機能を使うための定義ファイル
+
+&lt {
+    flavor = "hold-preferred";
+    tapping-term-ms = <200>;
+    quick-tap-ms = <200>; // 2連打ホールドでキーを連打リピート
+};
+
+&mt {
+    flavor = "hold-preferred";
+    tapping-term-ms = <200>;
+    quick-tap-ms = <200>; // 2連打ホールドでキーを連打リピート
+};
 
 / {
-    chosen {                                    // 物理レイアウトの最優先設定
-        zmk,physical-layout = &physical_layout0;
-    };
+    keymap {
+        compatible = "zmk,keymap";
 
-    default_transform: keymap_transform_0 {     // キーマトリクスを実際の配置に対応付ける設定
-        compatible = "zmk,matrix-transform";
-        columns = <12>;
-        rows = <4>;
-        map = <
-            RC(0,0) RC(0,1) RC(0,2) RC(0,3) RC(0,4) RC(0,7) RC(0,8) RC(0,9) RC(0,10) RC(0,11)
-			RC(1,0) RC(1,1) RC(1,2) RC(1,3) RC(1,4) RC(1,5) RC(1,6) RC(1,7) RC(1,8) RC(1,9) RC(1,10) RC(1,11)
-			RC(2,0) RC(2,1) RC(2,2) RC(2,3) RC(2,4) RC(2,5) RC(2,6) RC(2,7) RC(2,8) RC(2,9) RC(2,10) RC(2,11)
-			RC(3,3) RC(3,4) RC(3,5) RC(3,6) RC(3,7)
-        >;
-		col-offset = <6>;                       // 右手側の列の開始位置をずらすオフセット
-    };
+        layer_0 {
+            bindings =<
+                &kp Q         &kp W        &kp E       &kp R            &kp T                                         &kp Y      &kp U      &kp I      &kp O        &kp P
+				&kp A         &kp S        &lt 1 D     &kp F            &kp G            &kp ESC          &kp DEL     &kp H      &kp J      &lt 1 K    &kp L        &mt LSHFT MINUS
+				&mt LCTRL Z   &mt LALT X   &kp C       &kp V            &kp B            &kp TAB          &kp BSPC    &kp N      &kp M      &kp COMMA  &mt LALT DOT &mt LCTRL QMARK
+				                           &lt 6 LWIN  &mt LSHFT INT5   &lt 5 SPACE      &lt 4 ENTER      &lt 3 INT4
+                      >;
+                };
 
-    kscan0: kscan {                             // キー入力を検知するためのGPIOピンおよびスキャン設定
-        compatible = "zmk,kscan-gpio-matrix";
-        wakeup-source;                          // キー入力時にスリープから復帰する設定
+        // 📜 Layer 1: スクロール専用レイヤー（Dキー長押し時
+        layer_1 {
+            bindings = <
+                &trans       &trans       &trans       &trans        &trans                                   &trans       &trans        &trans       &trans        &trans
+                &trans       &trans       &trans       &trans        &trans       &trans       &trans         &trans       &trans        &trans       &trans        &trans
+                &trans       &trans       &trans       &trans        &trans       &trans       &trans         &trans       &trans        &trans       &trans        &trans
+                                                       &trans        &trans       &trans       &trans         &trans
+                       >;
+                };
 
-        diode-direction = "col2row";           // ダイオードの方向（列から行）
-        row-gpios                               // 行（タテのライン）に使用するGPIOピンの設定
-            = <&akdk_d 6 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
-			,<&akdk_d 14 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
-			,<&akdk_d 15 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
-			,<&akdk_d 16 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
-            ;
-        col-gpios                               // 列（ヨコのライン）に使用するGPIOピンの設定
-            = <&akdk_d 13 GPIO_ACTIVE_HIGH>
-			,<&akdk_d 12 GPIO_ACTIVE_HIGH>
-			,<&akdk_d 11 GPIO_ACTIVE_HIGH>
-			,<&akdk_d 5 GPIO_ACTIVE_HIGH>
-			,<&akdk_d 4 GPIO_ACTIVE_HIGH>
-			,<&akdk_d 3 GPIO_ACTIVE_HIGH>
-            ;
-    };
+        // 📜 Layer 2: オートマウスレイヤ
+        layer_2 {
+            bindings = <
+                &trans       &trans       &trans       &trans        &trans                                   &trans       &trans        &trans       &trans        &trans
+                &trans       &trans       &trans       &trans        &trans       &trans       &trans         &mkp MB5     &mkp LCLK     &mkp MCLK    &mkp RCLK     &trans
+                &trans       &trans       &trans       &trans        &trans       &trans       &trans         &mkp MB4     &trans        &trans       &trans        &trans
+                                                       &trans        &trans       &trans       &trans         &trans
+                       >;
+                };
 
-    trackball_listener: trackball_listener {    // トラックボールの入力を監視・加工するリスナー設定
-        compatible = "zmk,input-listener";
-        device = <&trackball>;
-        input-processors = <&zip_xy_transform (INPUT_TRANSFORM_X_INVERT | INPUT_TRANSFORM_Y_INVERT)>, // 軸の反転設定
-        <&zip_x_scaler 3 5>,                    // X軸スケーラー（速度調整）
-        <&zip_y_scaler 3 5>,                    // Y軸スケーラー（速度調整）
-        <&zip_temp_layer 2 600>;                // オートマウスレイヤー2へ！600ミリ秒で元に戻る
+        layer_3 {
+            bindings =<            
+				&kp LS(EQUAL) &kp LS(N5)   &kp LS(N6)   &kp LS(N8)   &kp LS(N9)                   &kp INT3      &kp LS(LBKT) &kp LS(N7)   &kp LS(SQT)  &kp LS(SEMI)
+				&kp LBKT     &kp LS(N3)   &kp LS(N4)   &kp RBKT     &kp NON_US_HASH     &none    &kp LS(MINUS) &kp EQUAL    &kp SQT      &kp SEMI     &kp SLASH    &kp LS(INT1)
+				&none        &none        &none        &kp LS(RBKT) &kp LS(NON_US_HASH) &none    &none         &kp LS(INT3) &kp LS(N2)   &kp LS(COMMA) &kp LS(DOT) &kp LS(N1)
+                                                        &none        &none              &none    &none         &none
+                     >;
+               };
+
+        layer_4 {
+            bindings =<            
+                &none         &none        &none        &none        &none                                      &kp N7       &kp N8       &kp N9       &kp LS(SQT)  &kp LS(SEMI)
+                &none         &none        &none        &kp UP       &none        &none           &kp LS(MINUS) &kp N4       &kp N5       &kp N6       &kp SLASH    &kp MINUS
+                &none         &none        &kp HOME     &kp DOWN     &kp END      &none           &kp N0        &kp N1       &kp N2       &kp N3       &kp DOT      &kp LS(SLASH)
+                                                        &none        &none        &none           &none         &none
+                      >;
+                };
+
+        layer_5 {
+            bindings =<
+				&none       &none       &none       &none        &none                                   &kp F7   &kp F8      &kp F9    &kp F12        &kp F15
+				&none       &none       &none       &kp UP       &none        &none       &none          &kp F4   &kp F5      &kp F6    &kp F11        &kp F14
+				&none       &none       &kp LEFT    &kp DOWN     &kp RIGHT    &none       &none          &kp F1   &kp F2      &kp F3    &kp F10        &kp F13
+                                                    &none        &none        &none       &none          &none
+                      >;
+                };
         
-        scroller {                              // スクロール設定
-        layers = <1>;                       // Dキー長押し（レイヤー1）のときにスクロール追加
-        input-processors = <&zip_x_scaler 1 4>, // スクロールの速度調整
-                           <&zip_y_scaler 1 2>, // スクロールの速度調整
-                           <&zip_xy_to_scroll_mapper>, // トラックボールの移動をスクロールに変換
-                           <&zip_scroll_transform (INPUT_TRANSFORM_X_INVERT)>; // スクロールの軸反転
-                           
-        process-next;                       // 処理を次に引き渡す設定
-                 };
+        // Layer 6: 特殊操作レイヤー (LWINモディファイアを伴う)
+        layer_6 {
+            bindings = <
+                &kp LG(Q)     &kp LG(W)    &kp LG(E)    &kp LG(R)    &kp LG(T)                                            &kp LG(Y)    &kp LG(U)    &kp LG(I)    &kp LG(O)    &kp LG(P)
+                &kp LG(A)     &kp LG(S)    &kp LG(D)    &kp LG(UP)   &kp LG(G)     &kp LG(ESC)        &kp LG(DEL)         &kp LG(H)    &kp LG(J)    &kp LG(K)    &kp LG(L)    &kp LG(MINUS)
+                &kp LG(Z)     &kp LG(X)    &kp LG(LEFT) &kp LG(DOWN) &kp LG(RIGHT) &kp LG(TAB)        &kp LG(BSPC)        &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2 &kp LG(DOT)  &kp LG(QMARK)
+                                                        &none        &none         &none              &none               &none
+                     >;
+                };
+                
         
-    };
-};
-
-&physical_layout0 {                             // キースキャン設定と配列マップを物理レイアウトに適用
-    kscan = <&kscan0>;
-    transform = <&default_transform>;
-};
-
-&pinctrl {                                      // トラックボール（SPI通信）に使用するピンの割り当て設定
-    spi0_default: spi0_default {                // 通常動作時のピン設定
-        group1 {
-            psels = <NRF_PSEL(SPIM_SCK, 0, 12)>,
-                <NRF_PSEL(SPIM_MOSI, 1, 9)>,
-                <NRF_PSEL(SPIM_MISO, 1, 9)>;
-        };
-    };
-
-    spi0_sleep: spi0_sleep {                    // スリープ（省電力）時のピン設定
-        group1 {
-            psels = <NRF_PSEL(SPIM_SCK, 0, 12)>,
-                <NRF_PSEL(SPIM_MOSI, 1, 9)>,
-                <NRF_PSEL(SPIM_MISO, 1, 9)>;
-            low-power-enable;
-        };
-    };
-};
-
-&spi0 {                                         // SPI通信およびトラックボールセンサー（PAW3222）の固有設定
-    status = "okay";                            // SPI通信を有効化
-    compatible = "nordic,nrf-spim";
-    pinctrl-0 = <&spi0_default>;
-    pinctrl-1 = <&spi0_sleep>;
-    pinctrl-names = "default", "sleep";
-    cs-gpios = <&gpio0 13 GPIO_ACTIVE_LOW>;     // チップセレクト（CS）ピン
-
-    trackball: trackball@0 {                    // センサー本体の設定
-        status = "okay";
-        compatible = "pixart,paw3222";          // センサーの型番
-        reg = <0>;
-        spi-max-frequency = <2000000>;         // SPI通信の最大周波数（2MHz）
-        irq-gpios = <&gpio0 15 GPIO_ACTIVE_LOW>; // 割り込み（モーション検知）ピン
-    };
+           };
 };
