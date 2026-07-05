@@ -1,15 +1,14 @@
-
-#include <dt-bindings/zmk/matrix_transform.h>
-#include <input/processors.dtsi>
-#include <dt-bindings/zmk/input_transform.h>
-#include "layouts.dtsi"
+#include <dt-bindings/zmk/matrix_transform.h>   // 外部定義ファイルのインクルード
+#include <input/processors.dtsi>                // インプットプロセッサのインクルード
+#include <dt-bindings/zmk/input_transform.h>    // マトリクス変換のインクルード
+#include "layouts.dtsi"                         // レイアウトファイルのインクルード
 
 / {
-    chosen {
+    chosen {                                    // 物理レイアウトの最優先設定
         zmk,physical-layout = &physical_layout0;
     };
 
-    default_transform: keymap_transform_0 {
+    default_transform: keymap_transform_0 {     // キーマトリクスを実際の配置に対応付ける設定
         compatible = "zmk,matrix-transform";
         columns = <12>;
         rows = <4>;
@@ -19,21 +18,21 @@
 			RC(2,0) RC(2,1) RC(2,2) RC(2,3) RC(2,4) RC(2,5) RC(2,6) RC(2,7) RC(2,8) RC(2,9) RC(2,10) RC(2,11)
 			RC(3,3) RC(3,4) RC(3,5) RC(3,6) RC(3,7)
         >;
-		col-offset = <6>;
+		col-offset = <6>;                       // 右手側の列の開始位置をずらすオフセット
     };
 
-    kscan0: kscan {
+    kscan0: kscan {                             // キー入力を検知するためのGPIOピンおよびスキャン設定
         compatible = "zmk,kscan-gpio-matrix";
-        wakeup-source;
+        wakeup-source;                          // キー入力時にスリープから復帰する設定
 
-        diode-direction = "col2row";
-        row-gpios
+        diode-direction = "col2row";           // ダイオードの方向（列から行）
+        row-gpios                               // 行（タテのライン）に使用するGPIOピンの設定
             = <&akdk_d 6 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
 			,<&akdk_d 14 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
 			,<&akdk_d 15 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
 			,<&akdk_d 16 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
             ;
-        col-gpios
+        col-gpios                               // 列（ヨコのライン）に使用するGPIOピンの設定
             = <&akdk_d 13 GPIO_ACTIVE_HIGH>
 			,<&akdk_d 12 GPIO_ACTIVE_HIGH>
 			,<&akdk_d 11 GPIO_ACTIVE_HIGH>
@@ -43,22 +42,22 @@
             ;
     };
 
-    trackball_listener: trackball_listener {
+    trackball_listener: trackball_listener {    // トラックボールの入力を監視・加工するリスナー設定
         compatible = "zmk,input-listener";
         device = <&trackball>;
-        input-processors = <&zip_xy_transform (INPUT_TRANSFORM_X_INVERT | INPUT_TRANSFORM_Y_INVERT)>,
-        <&zip_x_scaler 3 5>,
-        <&zip_y_scaler 3 5>;
+        input-processors = <&zip_xy_transform (INPUT_TRANSFORM_X_INVERT | INPUT_TRANSFORM_Y_INVERT)>, // 軸の反転設定
+        <&zip_x_scaler 3 5>,                    // X軸スケーラー（速度調整）
+        <&zip_y_scaler 3 5>;                    // Y軸スケーラー（速度調整）
     };
 };
 
-&physical_layout0 {
+&physical_layout0 {                             // キースキャン設定と配列マップを物理レイアウトに適用
     kscan = <&kscan0>;
     transform = <&default_transform>;
 };
 
-&pinctrl {
-    spi0_default: spi0_default {
+&pinctrl {                                      // トラックボール（SPI通信）に使用するピンの割り当て設定
+    spi0_default: spi0_default {                // 通常動作時のピン設定
         group1 {
             psels = <NRF_PSEL(SPIM_SCK, 0, 12)>,
                 <NRF_PSEL(SPIM_MOSI, 1, 9)>,
@@ -66,7 +65,7 @@
         };
     };
 
-    spi0_sleep: spi0_sleep {
+    spi0_sleep: spi0_sleep {                    // スリープ（省電力）時のピン設定
         group1 {
             psels = <NRF_PSEL(SPIM_SCK, 0, 12)>,
                 <NRF_PSEL(SPIM_MOSI, 1, 9)>,
@@ -76,19 +75,19 @@
     };
 };
 
-&spi0 {
-    status = "okay";
+&spi0 {                                         // SPI通信およびトラックボールセンサー（PAW3222）の固有設定
+    status = "okay";                            // SPI通信を有効化
     compatible = "nordic,nrf-spim";
     pinctrl-0 = <&spi0_default>;
     pinctrl-1 = <&spi0_sleep>;
     pinctrl-names = "default", "sleep";
-    cs-gpios = <&gpio0 13 GPIO_ACTIVE_LOW>;
+    cs-gpios = <&gpio0 13 GPIO_ACTIVE_LOW>;     // チップセレクト（CS）ピン
 
-    trackball: trackball@0 {
+    trackball: trackball@0 {                    // センサー本体の設定
         status = "okay";
-        compatible = "pixart,paw3222";
+        compatible = "pixart,paw3222";          // センサーの型番
         reg = <0>;
-        spi-max-frequency = <2000000>;
-        irq-gpios = <&gpio0 15 GPIO_ACTIVE_LOW>;
+        spi-max-frequency = <2000000>;         // SPI通信の最大周波数（2MHz）
+        irq-gpios = <&gpio0 15 GPIO_ACTIVE_LOW>; // 割り込み（モーション検知）ピン
     };
 };
