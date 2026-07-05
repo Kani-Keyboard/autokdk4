@@ -49,13 +49,13 @@
         <&zip_x_scaler 3 5>,                    // X軸スケーラー（速度調整）
         <&zip_y_scaler 3 5>;                    // Y軸スケーラー（速度調整）
         
-        scroller {
-            layers = <1>;                       // layer1をスクロールレイヤにする
-            input-processors = <&zip_xy_to_scroll_mapper>, 
-                               <&zip_scroll_transform (INPUT_TRANSFORM_X_INVERT)>, 
-                               <&zip_scroll_scaler 1 128>; 
-            process-next;
-        };
+        scroller {                              // スクロール設定
+        layers = <1>;                       // Dキー長押し（レイヤー1）のときにスクロール追加
+        input-processors = <&zip_xy_to_scroll_mapper>, // トラックボールの移動をスクロールに変換
+                           <&zip_scroll_transform (INPUT_TRANSFORM_X_INVERT)>, // スクロールの軸反転
+                           <&zip_scroll_scaler 1 128>; // スクロールの速度調整
+        process-next;                       // 処理を次に引き渡す設定
+                 };
         
     };
 };
