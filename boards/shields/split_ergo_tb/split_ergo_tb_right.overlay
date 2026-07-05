@@ -49,7 +49,7 @@
         <&zip_x_scaler 3 5>,                    // X軸スケーラー（速度調整）
         <&zip_y_scaler 3 5>;                    // Y軸スケーラー（速度調整）
     };
-
+};
 
 &physical_layout0 {                             // キースキャン設定と配列マップを物理レイアウトに適用
     kscan = <&kscan0>;
