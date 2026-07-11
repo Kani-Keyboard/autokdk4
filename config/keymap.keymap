@@ -21,15 +21,15 @@
         zoom_in: zoom_in {  //拡大のマクロ定義作成
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
-            bindings = <&macro_press &kp LCTRL>,
-                       <&macro_tap &mkp SCRL_UP>,
+            bindings = <&macro_press &kp LCTRL>,<&macro_wait_time 50>,
+                       <&macro_tap &mkp SCRL_UP>,<&macro_wait_time 50>,
                        <&macro_release &kp LCTRL>;
                          };
         zoom_out: zoom_out { //縮小のマクロ定義作成
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
-            bindings = <&macro_press &kp LCTRL>,
-                       <&macro_tap &mkp SCRL_DOWN>,
+            bindings = <&macro_press &kp LCTRL>,<&macro_wait_time 50>,
+                       <&macro_tap &mkp SCRL_DOWN>,<&macro_wait_time 50>,
                        <&macro_release &kp LCTRL>;
                             };
            };
