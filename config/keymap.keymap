@@ -51,7 +51,7 @@
         layer_1 {
             bindings = <
                 &trans       &trans       &trans       &trans        &trans                                   &trans       &trans        &trans       &trans        &trans
-                &trans       &trans       &trans       &trans        &trans       &trans       &trans         &trans       &trans        &trans       &trans        &trans
+                &mkp SCRL_UP       &trans       &trans       &trans        &trans       &trans       &trans         &trans       &trans        &trans       &trans        &trans
                 &trans       &trans       &trans       &trans        &trans       &trans       &trans         &trans       &trans        &trans       &trans        &trans
                                                        &trans        &trans       &trans       &trans         &trans
                        >;
