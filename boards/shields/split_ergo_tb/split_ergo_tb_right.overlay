@@ -55,7 +55,7 @@
         input-processors = <&zip_xy_to_scroll_mapper>, // トラックボールの移動をスクロールに変換
                            <&zip_x_scaler 1 4>,            // x方向のスクロール速度調整
                            <&zip_y_scaler 1 2>,            // y方向のスクロール速度調整
-                           <&zip_scroll_transform (INPUT_TRANSFORM_X_INVERT)>, // スクロールの軸反転
+                           <&zip_scroll_transform (INPUT_TRANSFORM_X_INVERT)>; // スクロールの軸反転
         process-next;                       // 処理を次に引き渡す設定
                  };
         
