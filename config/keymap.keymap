@@ -16,7 +16,8 @@
 };
 
 
-macros {
+/ {
+    macros {
         zoom_in: zoom_in {  //拡大のマクロ定義作成
             compatible = "zmk,behavior-macro";
             #binding-cells = <0>;
@@ -31,10 +32,9 @@ macros {
                        <&macro_tap &mkp SCRL_DOWN>,
                        <&macro_release &kp LCTRL>;
                             };
-       };
-
-
-/ {
+           };
+       
+       
     keymap {
         compatible = "zmk,keymap";
 
