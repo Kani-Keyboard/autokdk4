@@ -24,7 +24,7 @@
                 &kp Q         &kp W        &kp E       &kp R            &kp T                                         &kp Y      &kp U      &kp I      &kp O        &kp P
 				&kp A         &kp S        &lt 1 D     &kp F            &kp G            &kp ESC          &kp DEL     &kp H      &kp J      &lt 1 K    &kp L        &mt LSHFT MINUS
 				&mt LCTRL Z   &mt LALT X   &kp C       &kp V            &kp B            &kp TAB          &kp BSPC    &kp N      &kp M      &kp COMMA  &mt LALT DOT &mt LCTRL QMARK
-				                           &lt 6 LWIN  &mt LSHFT INT5   &lt 5 SPACE      &lt 4 ENTER      &lt 3 INT4
+				                           &lt 6 LWIN  &lt 5 INT5   &mt LSHFT SPACE      &lt 4 ENTER      &lt 3 INT4
                       >;
                 };
 
@@ -78,10 +78,10 @@
         // Layer 6: 特殊操作レイヤー (LWINモディファイアを伴う)
         layer_6 {
             bindings = <
-                &kp LG(Q)     &kp LG(W)    &kp LG(E)    &kp LG(R)    &kp LG(T)                                            &kp LG(Y)    &kp LG(U)    &kp LG(I)    &kp LG(O)    &kp LG(P)
-                &kp LG(A)     &kp LG(S)    &kp LG(D)    &kp LG(UP)   &kp LG(G)     &kp LG(ESC)        &kp LG(DEL)         &kp LG(H)    &kp LG(J)    &kp LG(K)    &kp LG(L)    &kp LG(MINUS)
-                &kp LG(Z)     &kp LG(X)    &kp LG(LEFT) &kp LG(DOWN) &kp LG(RIGHT) &kp LG(TAB)        &kp LG(BSPC)        &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2 &kp LG(DOT)  &kp LG(QMARK)
-                                                        &none        &none         &none              &none               &none
+                &kp LG(Q)     &kp LG(W)    &kp LG(E)    &kp LG(R)     &kp LG(T)                                            &kp LG(Y)    &kp LG(U)    &kp LG(I)    &kp LG(O)    &kp LG(P)
+                &kp LG(A)     &kp LG(S)    &kp LG(D)    &kp LC(EQUAL) &kp LG(G)     &kp LG(ESC)        &kp LG(DEL)         &kp LG(H)    &kp LG(J)    &kp LG(K)    &kp LG(L)    &kp LG(MINUS)
+                &kp LG(Z)     &kp LG(X)    &kp LG(LEFT) &kp LC(MINUS) &kp LG(RIGHT) &kp LG(TAB)        &kp LG(BSPC)        &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2 &kp LG(DOT)  &kp LG(QMARK)
+                                                        &none         &none         &none              &none               &none
                      >;
                 };
                 
