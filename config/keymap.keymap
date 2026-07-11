@@ -78,10 +78,10 @@
         // Layer 6: 特殊操作レイヤー (LWINモディファイアを伴う)
         layer_6 {
             bindings = <
-                &kp LG(Q)     &kp LG(W)    &kp LG(E)    &kp LG(R)     &kp LG(T)                                            &kp LG(Y)    &kp LG(U)    &kp LG(I)    &kp LG(O)    &kp LG(P)
-                &kp LG(A)     &kp LG(S)    &kp LG(D)    &kp LC(EQUAL) &kp LG(G)     &kp LG(ESC)        &kp LG(DEL)         &kp LG(H)    &kp LG(J)    &kp LG(K)    &kp LG(L)    &kp LG(MINUS)
-                &kp LG(Z)     &kp LG(X)    &kp LG(LEFT) &kp LC(MINUS) &kp LG(RIGHT) &kp LG(TAB)        &kp LG(BSPC)        &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2 &kp LG(DOT)  &kp LG(QMARK)
-                                                        &none         &none         &none              &none               &none
+                &kp LG(Q)     &kp LG(W)    &kp LG(E)    &kp LG(R)        &kp LG(T)                                            &kp LG(Y)    &kp LG(U)    &kp LG(I)    &kp LG(O)    &kp LG(P)
+                &kp LG(A)     &kp LG(S)    &kp LG(D)    &kp LC(KP_PLUS)  &kp LG(G)     &kp LG(ESC)        &kp LG(DEL)         &kp LG(H)    &kp LG(J)    &kp LG(K)    &kp LG(L)    &kp LG(MINUS)
+                &kp LG(Z)     &kp LG(X)    &kp LG(LEFT) &kp LC(KP_MINUS) &kp LG(RIGHT) &kp LG(TAB)        &kp LG(BSPC)        &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2 &kp LG(DOT)  &kp LG(QMARK)
+                                                        &none            &none         &none              &none               &none
                      >;
                 };
                 
