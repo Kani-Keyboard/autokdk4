@@ -14,11 +14,11 @@
         rows = <4>;
         map = <
             RC(0,0) RC(0,1) RC(0,2) RC(0,3) RC(0,4) RC(0,7) RC(0,8) RC(0,9) RC(0,10) RC(0,11)
-			RC(1,0) RC(1,1) RC(1,2) RC(1,3) RC(1,4) RC(1,5) RC(1,6) RC(1,7) RC(1,8) RC(1,9) RC(1,10) RC(1,11)
-			RC(2,0) RC(2,1) RC(2,2) RC(2,3) RC(2,4) RC(2,5) RC(2,6) RC(2,7) RC(2,8) RC(2,9) RC(2,10) RC(2,11)
-			RC(3,3) RC(3,4) RC(3,5) RC(3,6) RC(3,7)
+            RC(1,0) RC(1,1) RC(1,2) RC(1,3) RC(1,4) RC(1,5) RC(1,6) RC(1,7) RC(1,8) RC(1,9) RC(1,10) RC(1,11)
+            RC(2,0) RC(2,1) RC(2,2) RC(2,3) RC(2,4) RC(2,5) RC(2,6) RC(2,7) RC(2,8) RC(2,9) RC(2,10) RC(2,11)
+            RC(3,3) RC(3,4) RC(3,5) RC(3,6) RC(3,7)
         >;
-		col-offset = <6>;                       // 右手側の列の開始位置をずらすオフセット
+        col-offset = <6>;                       // 右手側の列の開始位置をずらすオフセット
     };
 
     kscan0: kscan {                             // キー入力を検知するためのGPIOピンおよびスキャン設定
@@ -28,17 +28,17 @@
         diode-direction = "col2row";           // ダイオードの方向（列から行）
         row-gpios                               // 行（タテのライン）に使用するGPIOピンの設定
             = <&akdk_d 6 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
-			,<&akdk_d 14 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
-			,<&akdk_d 15 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
-			,<&akdk_d 16 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
+            ,<&akdk_d 14 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
+            ,<&akdk_d 15 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
+            ,<&akdk_d 16 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
             ;
         col-gpios                               // 列（ヨコのライン）に使用するGPIOピンの設定
             = <&akdk_d 13 GPIO_ACTIVE_HIGH>
-			,<&akdk_d 12 GPIO_ACTIVE_HIGH>
-			,<&akdk_d 11 GPIO_ACTIVE_HIGH>
-			,<&akdk_d 5 GPIO_ACTIVE_HIGH>
-			,<&akdk_d 4 GPIO_ACTIVE_HIGH>
-			,<&akdk_d 3 GPIO_ACTIVE_HIGH>
+            ,<&akdk_d 12 GPIO_ACTIVE_HIGH>
+            ,<&akdk_d 11 GPIO_ACTIVE_HIGH>
+            ,<&akdk_d 5 GPIO_ACTIVE_HIGH>
+            ,<&akdk_d 4 GPIO_ACTIVE_HIGH>
+            ,<&akdk_d 3 GPIO_ACTIVE_HIGH>
             ;
     };
 
@@ -46,20 +46,20 @@
         compatible = "zmk,input-listener";
         device = <&trackball>;
         input-processors = <&zip_xy_transform (INPUT_TRANSFORM_X_INVERT | INPUT_TRANSFORM_Y_INVERT)>, // 軸の反転設定
-        <&zip_x_scaler 3 5>,                    // X軸スケーラー（速度調整）
-        <&zip_y_scaler 3 5>;                    // Y軸スケーラー（速度調整）
+            <&zip_x_scaler 3 5>,                // X軸スケーラー（速度調整）
+            <&zip_y_scaler 3 5>;                // Y軸スケーラー（速度調整）
         
         scroller {                              // スクロール設定
-        layers = <1>;                       // レイヤー1のときにスクロール追加
-        input-processors = <&zip_xy_to_scroll_mapper>, // トラックボールの移動をスクロールに変換
-                           <&zip_x_scaler 1 4>,            // x方向のスクロール速度調整
-                           <&zip_y_scaler 1 2>,            // y方向のスクロール速度調整
-                           <&zip_scroll_transform (INPUT_TRANSFORM_X_INVERT)>; // スクロールの軸反転
-        process-next;                       // 処理を次に引き渡す設定
-                 };
-    };
+            layers = <1>;                       // レイヤー1のときにスクロール追加
+            input-processors = <&zip_xy_to_scroll_mapper>, // トラックボールの移動をスクロールに変換
+                               <&zip_x_scaler 1 4>,         // x方向のスクロール速度調整
+                               <&zip_y_scaler 1 2>,         // y方向のスクロール速度調整
+                               <&zip_scroll_transform (INPUT_TRANSFORM_X_INVERT)>; // スクロールの軸反転
+            process-next;                       // 処理を次に引き渡す設定
+        };
+    }; 💛 ここにあった }; を削除して auto_mouse_listener をルートノードの内側に入れたよ
 
-auto_mouse_listener: auto_mouse_listener {  // 過剰反応防止用リスナー
+    auto_mouse_listener: auto_mouse_listener {  // 過剰反応防止用リスナー
         compatible = "zmk,input-listener";
         device = <&trackball>;
         
@@ -67,7 +67,7 @@ auto_mouse_listener: auto_mouse_listener {  // 過剰反応防止用リスナー
         time-to-react-ms = <100>;               // 100ms以上動きが続いた時だけ判定
         input-processors = <&zip_temp_layer 2 600>;  // 条件を満たしたらレイヤー2へ
     };
-};
+}; 💛 ルートノードをここで閉じる！
 
 &physical_layout0 {                             // キースキャン設定と配列マップを物理レイアウトに適用
     kscan = <&kscan0>;
