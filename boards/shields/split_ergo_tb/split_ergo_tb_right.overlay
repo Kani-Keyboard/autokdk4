@@ -47,8 +47,7 @@
         device = <&trackball>;
         input-processors = <&zip_xy_transform (INPUT_TRANSFORM_X_INVERT | INPUT_TRANSFORM_Y_INVERT)>, // 軸の反転設定
         <&zip_x_scaler 3 5>,                    // X軸スケーラー（速度調整）
-        <&zip_y_scaler 3 5>,                    // Y軸スケーラー（速度調整）
-        <&zip_temp_layer 2 600>;                // オートマウスレイヤー2へ！600ミリ秒で元に戻る
+        <&zip_y_scaler 3 5>;                    // Y軸スケーラー（速度調整）
         
         scroller {                              // スクロール設定
         layers = <1>;                       // レイヤー1のときにスクロール追加
@@ -58,7 +57,15 @@
                            <&zip_scroll_transform (INPUT_TRANSFORM_X_INVERT)>; // スクロールの軸反転
         process-next;                       // 処理を次に引き渡す設定
                  };
+    };
+
+auto_mouse_listener: auto_mouse_listener {  // 過剰反応防止用リスナー
+        compatible = "zmk,input-listener";
+        device = <&trackball>;
         
+        layers = <0>;                           // レイヤー0の時のみ判定
+        time-to-react-ms = <100>;               // 100ms以上動きが続いた時だけ判定
+        input-processors = <&zip_temp_layer 2 600>;  // 条件を満たしたらレイヤー2へ
     };
 };
 
