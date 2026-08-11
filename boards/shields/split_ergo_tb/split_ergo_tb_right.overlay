@@ -47,8 +47,7 @@
         device = <&trackball>;
         input-processors = <&zip_xy_transform (INPUT_TRANSFORM_X_INVERT | INPUT_TRANSFORM_Y_INVERT)>, // 軸の反転設定
         <&zip_x_scaler 3 5>,                    // X軸スケーラー（速度調整）
-        <&zip_y_scaler 3 5>,                    // Y軸スケーラー（速度調整）
-        <&zip_temp_layer 2 600>;                // オートマウスレイヤー2へ！600ミリ秒で元に戻る
+        <&zip_y_scaler 3 5>;                    // Y軸スケーラー（速度調整）
         
         scroller {                              // スクロール設定
         layers = <1>;                       // レイヤー1のときにスクロール追加
@@ -57,9 +56,21 @@
                            <&zip_y_scaler 1 2>,            // y方向のスクロール速度調整
                            <&zip_scroll_transform (INPUT_TRANSFORM_X_INVERT)>; // スクロールの軸反転
         process-next;                       // 処理を次に引き渡す設定
-                 };
+                 };        
+                                           };
+
+auto_mouse_listener: auto_mouse_listener {  //オートマウスリスナー
+        compatible = "zmk,input-listener";
+        device = <&trackball>;
         
-    };
+        layers = <0>;                           // デフォルトレイヤー（レイヤー0）にいる時のみ判定
+        time-to-react-ms = <100>;               // この時間以上動きが続いた時のみAMLへ（ノイズ判定回避）
+        min-value = <4>;                        // 一定以上の移動量を検知した時のみAMLへ（ノイズ判定回避）
+        
+        input-processors = 
+            <&zip_xy_deadzone 5>,               // 閾値未満の微小な振動入力を排除
+            <&zip_temp_layer 2 600>;            // 条件を満たした場合のみオートマウスレイヤー2へ。この時間キープ
+                                         };
 };
 
 &physical_layout0 {                             // キースキャン設定と配列マップを物理レイアウトに適用
