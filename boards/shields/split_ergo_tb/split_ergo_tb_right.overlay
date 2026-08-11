@@ -62,10 +62,6 @@
     };
 };
 
-&mkp_input_listener {
-    input-processors = <&zip_temp_layer 2 600>;  // マウスボタンを押した時にオートマウスレイヤーの時間延長
-};
-
 &physical_layout0 {                             // キースキャン設定と配列マップを物理レイアウトに適用
     kscan = <&kscan0>;
     transform = <&default_transform>;
@@ -104,5 +100,5 @@
         reg = <0>;
         spi-max-frequency = <2000000>;         // SPI通信の最大周波数（2MHz）
         irq-gpios = <&gpio0 15 GPIO_ACTIVE_LOW>; // 割り込み（モーション検知）ピン
-                           };
-      };
+    };
+};
